@@ -1,0 +1,33 @@
+platform :ios, '10.0'
+
+inhibit_all_warnings!
+
+def tool
+  pod 'ReactiveObjC'
+  pod 'Masonry'
+  pod 'AFNetworking'
+  pod 'ODRefreshControl'
+  pod 'GVUserDefaults'
+  pod 'DZNEmptyDataSet'
+  pod 'YYKit'
+  pod 'TPKeyboardAvoiding'
+  pod 'TYCyclePagerView'
+  pod 'MBProgressHUD'
+  pod 'JDStatusBarNotification'
+  pod 'TZImagePickerController'
+  pod 'R.objc'
+  pod 'CYLTabBarController'
+end
+
+target 'BaseProject_oc' do
+  tool
+end
+
+# m1 bug
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+        end
+    end
+end

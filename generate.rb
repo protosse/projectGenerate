@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require 'xcodeproj'
 require 'optparse'
 require 'fileutils'
 
+# Generate
 class Generate
   def run
     banner = "Usage: #{__FILE__} name [options]"
@@ -20,26 +23,43 @@ class Generate
 
     name = optparse.first.to_s
     dir = options[:dir].to_s
-    path = "#{dir.length > 0 ? dir : "."}/#{name}"
+    path = "#{!dir.empty? ? dir : '.'}/#{name}"
 
     if Dir.exist?(path)
       puts "#{path} already exist."
-      # exit(-1)
       FileUtils.rm_r path
+      # exit(-1)
     end
     Dir.mkdir(path)
 
-    project = Xcodeproj::Project.new("#{path}/#{name}.xcodeproj")
-    group = project.main_group.new_group(name)
-    %w[Controller Model View Util Vendor].each { |n|
-      g = group.new_group(n)
-      case n
-      when "Controller"
-        g.new_group("Base")
-      end
-    }
+    base_project_name = 'BaseProject_oc'
+    FileUtils.cp_r "#{base_project_name}/.", path
 
-    project.save
+    Dir["#{path}/**/*"].each do |fname|
+      next unless File.file?(fname)
+
+      data = File.read fname
+      filtered_data = data.gsub(base_project_name, name)
+      File.open(fname, 'w') do |f|
+        f.write(filtered_data)
+      end
+    end
+
+    Dir["#{path}/*"].each do |fname|
+      new_name = fname.gsub(/#{base_project_name}/, name)
+      File.rename(fname, new_name)
+    end
+
+    proj = Xcodeproj::Project.open("#{path}/#{name}.xcodeproj")
+    proj.targets[0].build_configurations.each do |config|
+      config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "com.doom.#{name}"
+    end
+    proj.save
+
+    cmd = 'pod install'
+    Dir.chdir path do
+      `#{cmd}`
+    end
   end
 end
 
