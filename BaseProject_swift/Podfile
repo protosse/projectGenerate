@@ -1,0 +1,39 @@
+platform :ios, '10.0'
+use_frameworks!
+inhibit_all_warnings!
+
+def rx
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'NSObject+Rx'
+  pod 'RxKeyboard'
+end
+
+target 'BaseProject_swift' do
+  rx
+
+  # UI
+  pod 'PinLayout'
+  pod 'SnapKit'
+  pod 'MBProgressHUD'
+  pod 'JXPagingView/Paging'
+  pod 'JXSegmentedView'
+  pod 'TYCyclePagerView'
+  pod 'TZImagePickerController'
+  pod 'CYLTabBarController'
+  pod 'MJRefresh'
+  pod 'TPKeyboardAvoiding'
+  pod 'PPBadgeViewSwift'
+  
+  # Network
+  pod 'Moya'
+  pod 'Kingfisher'
+  
+  # Util
+  pod 'HandyJSON'
+  pod 'SwifterSwift'
+  pod 'Then'
+  pod 'SwiftyUserDefaults'
+  pod 'ReachabilitySwift'
+  pod 'R.swift'
+end

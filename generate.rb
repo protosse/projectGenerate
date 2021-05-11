@@ -14,6 +14,9 @@ class Generate
       opt.on('-d', '--dir PATH', 'Set the dir path') do |arg|
         options[:dir] = arg
       end
+      opt.on('-t', '--type TYPE[objc|swift]', %i[swift objc], 'Set the project type, default is objc') do |arg|
+        options[:type] = arg
+      end
     end.parse!
 
     if optparse.empty?
@@ -24,15 +27,23 @@ class Generate
     name = optparse.first.to_s
     dir = options[:dir].to_s
     path = "#{!dir.empty? ? dir : '.'}/#{name}"
+    type = options[:type].nil? ? 'objc' : options[:type].to_s
 
     if Dir.exist?(path)
       puts "#{path} already exist."
-      FileUtils.rm_r path
-      # exit(-1)
+      # FileUtils.rm_r path
+      exit(-1)
     end
     Dir.mkdir(path)
 
-    base_project_name = 'BaseProject_oc'
+    base_project_name = case type
+                        when 'objc'
+                          'BaseProject_oc'
+                        when 'swift'
+                          'BaseProject_swift'
+                        else
+                          ''
+                        end
     FileUtils.cp_r "#{base_project_name}/.", path
 
     Dir["#{path}/**/*"].each do |fname|
