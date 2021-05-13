@@ -26,7 +26,7 @@ class Generate
 
     name = optparse.first.to_s
     dir = options[:dir].to_s
-    path = "#{!dir.empty? ? dir : '.'}/#{name}"
+    path = File.expand_path(name, (!dir.empty? ? dir : '.').to_s)
     type = options[:type].nil? ? 'objc' : options[:type].to_s
 
     if Dir.exist?(path)
@@ -44,7 +44,7 @@ class Generate
                         else
                           ''
                         end
-    FileUtils.cp_r "#{base_project_name}/.", path
+    FileUtils.cp_r "#{File.dirname(__FILE__ )}/#{base_project_name}/.", path
 
     Dir["#{path}/**/*"].each do |fname|
       next unless File.file?(fname)
