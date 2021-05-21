@@ -7,9 +7,10 @@
 //
 
 #import "BaseViewController.h"
-#import "ApiResponse.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import <MJRefresh/MJRefresh.h>
+#import "ApiResponse.h"
+#import "DRHelper.h"
 
 @interface BaseTableViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 

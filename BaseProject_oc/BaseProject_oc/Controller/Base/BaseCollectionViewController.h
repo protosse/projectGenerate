@@ -10,6 +10,7 @@
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import <MJRefresh/MJRefresh.h>
 #import "ApiResponse.h"
+#import "DRHelper.h"
 
 @interface BaseCollectionViewController : BaseViewController <UICollectionViewDelegate, UICollectionViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
