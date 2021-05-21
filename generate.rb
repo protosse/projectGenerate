@@ -62,15 +62,16 @@ class Generate
     end
 
     proj = Xcodeproj::Project.open("#{path}/#{name}.xcodeproj")
+    proj.targets[0].display_name
     proj.targets[0].build_configurations.each do |config|
       config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = "com.doom.#{name}"
     end
     proj.save
 
-    cmd = 'pod install'
-    Dir.chdir path do
-      `#{cmd}`
-    end
+    # cmd = 'pod install'
+    # Dir.chdir path do
+    #   `#{cmd}`
+    # end
   end
 end
 

@@ -1,13 +1,13 @@
 //
 //  NSString+Valid.m
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/10.
 //  Copyright © 2018年 doom. All rights reserved.
 //
 
 #import "NSString+Valid.h"
-#import "RegExCategories.h"
+#import <RegExCategories/RegExCategories.h>
 
 @implementation NSString (Valid)
 
@@ -27,7 +27,7 @@
     return [RX(@"^\\d+$|^\\d+\\.\\d{1,2}$") isMatch:self];
 }
 
--(BOOL)isPwd {
+- (BOOL)isPwd {
     return [RX(@"^[a-zA-Z0-9]{6,10}$") isMatch:self];
 }
 

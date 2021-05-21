@@ -1,6 +1,6 @@
 //
 //  Designable.m
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/9.
 //  Copyright © 2018年 doom. All rights reserved.
@@ -11,13 +11,13 @@
 IB_DESIGNABLE
 @implementation View
 
-- (void)setCornerRadius:(CGFloat)cornerRadius{
+- (void)setCornerRadius:(CGFloat)cornerRadius {
     _cornerRadius = cornerRadius;
-    self.layer.cornerRadius  = _cornerRadius;
+    self.layer.cornerRadius = _cornerRadius;
     self.layer.masksToBounds = YES;
 }
 
-- (void)setBcolor:(UIColor *)bcolor{
+- (void)setBcolor:(UIColor *)bcolor {
     _bcolor = bcolor;
     self.layer.borderColor = _bcolor.CGColor;
 }
@@ -32,13 +32,13 @@ IB_DESIGNABLE
 IB_DESIGNABLE
 @implementation ImageView
 
-- (void)setCornerRadius:(CGFloat)cornerRadius{
+- (void)setCornerRadius:(CGFloat)cornerRadius {
     _cornerRadius = cornerRadius;
-    self.layer.cornerRadius  = _cornerRadius;
+    self.layer.cornerRadius = _cornerRadius;
     self.layer.masksToBounds = YES;
 }
 
-- (void)setBcolor:(UIColor *)bcolor{
+- (void)setBcolor:(UIColor *)bcolor {
     _bcolor = bcolor;
     self.layer.borderColor = _bcolor.CGColor;
 }
@@ -53,13 +53,13 @@ IB_DESIGNABLE
 IB_DESIGNABLE
 @implementation Button
 
-- (void)setCornerRadius:(CGFloat)cornerRadius{
+- (void)setCornerRadius:(CGFloat)cornerRadius {
     _cornerRadius = cornerRadius;
-    self.layer.cornerRadius  = _cornerRadius;
+    self.layer.cornerRadius = _cornerRadius;
     self.layer.masksToBounds = YES;
 }
 
-- (void)setBcolor:(UIColor *)bcolor{
+- (void)setBcolor:(UIColor *)bcolor {
     _bcolor = bcolor;
     self.layer.borderColor = _bcolor.CGColor;
 }
@@ -74,13 +74,13 @@ IB_DESIGNABLE
 IB_DESIGNABLE
 @implementation Label
 
-- (void)setCornerRadius:(CGFloat)cornerRadius{
+- (void)setCornerRadius:(CGFloat)cornerRadius {
     _cornerRadius = cornerRadius;
-    self.layer.cornerRadius  = _cornerRadius;
+    self.layer.cornerRadius = _cornerRadius;
     self.layer.masksToBounds = YES;
 }
 
-- (void)setBcolor:(UIColor *)bcolor{
+- (void)setBcolor:(UIColor *)bcolor {
     _bcolor = bcolor;
     self.layer.borderColor = _bcolor.CGColor;
 }

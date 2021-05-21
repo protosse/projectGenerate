@@ -1,12 +1,13 @@
 platform :ios, '10.0'
 
+use_frameworks!
 inhibit_all_warnings!
 
 def tool
   pod 'ReactiveObjC'
   pod 'Masonry'
   pod 'AFNetworking'
-  pod 'ODRefreshControl'
+  pod 'MJRefresh'
   pod 'GVUserDefaults'
   pod 'DZNEmptyDataSet'
   pod 'YYKit'
@@ -17,6 +18,9 @@ def tool
   pod 'TZImagePickerController'
   pod 'R.objc'
   pod 'CYLTabBarController'
+  pod 'PinLayout'
+  pod 'UITextView+Placeholder'
+  pod 'RegExCategories'
 end
 
 target 'BaseProject_oc' do

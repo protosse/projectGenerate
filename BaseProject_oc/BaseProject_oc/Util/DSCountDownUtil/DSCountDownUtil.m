@@ -30,6 +30,10 @@
     return countDownUtil;
 }
 
+- (void)dealloc {
+    [self stopCountTimeNoBlock];
+}
+
 - (void)startTimerWithSecond:(NSInteger)second {
     _second = second;
     _totalSecond = second;
@@ -65,7 +69,7 @@
     }
 }
 
--(void)stopCountTimeNoBlock {
+- (void)stopCountTimeNoBlock {
     if (_timer) {
         [_timer invalidate];
         _timer = nil;

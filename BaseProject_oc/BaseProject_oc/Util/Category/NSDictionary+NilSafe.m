@@ -6,7 +6,6 @@
 //  Copyright © 2016 Glow Inc. All rights reserved.
 //
 
-#import <objc/runtime.h>
 #import "NSDictionary+NilSafe.h"
 
 @implementation NSObject (Swizzling)
@@ -18,20 +17,20 @@
         return NO;
     }
     class_addMethod(self,
-                    origSel,
-                    class_getMethodImplementation(self, origSel),
-                    method_getTypeEncoding(origMethod));
+            origSel,
+            class_getMethodImplementation(self, origSel),
+            method_getTypeEncoding(origMethod));
     class_addMethod(self,
-                    altSel,
-                    class_getMethodImplementation(self, altSel),
-                    method_getTypeEncoding(altMethod));
+            altSel,
+            class_getMethodImplementation(self, altSel),
+            method_getTypeEncoding(altMethod));
     method_exchangeImplementations(class_getInstanceMethod(self, origSel),
-                                   class_getInstanceMethod(self, altSel));
+            class_getInstanceMethod(self, altSel));
     return YES;
 }
 
 + (BOOL)gl_swizzleClassMethod:(SEL)origSel withMethod:(SEL)altSel {
-    return [object_getClass((id)self) gl_swizzleMethod:origSel withMethod:altSel];
+    return [object_getClass((id) self) gl_swizzleMethod:origSel withMethod:altSel];
 }
 
 @end
@@ -46,7 +45,7 @@
     });
 }
 
-+ (instancetype)gl_dictionaryWithObjects:(const id [])objects forKeys:(const id<NSCopying> [])keys count:(NSUInteger)cnt {
++ (instancetype)gl_dictionaryWithObjects:(const id[])objects forKeys:(const id <NSCopying>[])keys count:(NSUInteger)cnt {
     id safeObjects[cnt];
     id safeKeys[cnt];
     NSUInteger j = 0;
@@ -63,7 +62,7 @@
     return [self gl_dictionaryWithObjects:safeObjects forKeys:safeKeys count:j];
 }
 
-- (instancetype)gl_initWithObjects:(const id [])objects forKeys:(const id<NSCopying> [])keys count:(NSUInteger)cnt {
+- (instancetype)gl_initWithObjects:(const id[])objects forKeys:(const id <NSCopying>[])keys count:(NSUInteger)cnt {
     id safeObjects[cnt];
     id safeKeys[cnt];
     NSUInteger j = 0;
@@ -96,14 +95,14 @@
     });
 }
 
-- (void)gl_setObject:(id)anObject forKey:(id<NSCopying>)aKey {
+- (void)gl_setObject:(id)anObject forKey:(id <NSCopying>)aKey {
     if (!aKey || !anObject) {
         return;
     }
     [self gl_setObject:anObject forKey:aKey];
 }
 
-- (void)gl_setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key {
+- (void)gl_setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key {
     if (!key || !obj) {
         return;
     }

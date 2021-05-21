@@ -1,6 +1,6 @@
 //
 //  BaseViewController.h
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/9.
 //  Copyright © 2018年 doom. All rights reserved.
@@ -22,11 +22,14 @@
 /// after init call
 - (void)customInit;
 
-/// after viewDidLoad call
+/// call after viewDidLayoutSubviews
+- (void)layoutUI;
+
+/// call after viewDidLoad
 - (void)bindModel;
 
 /// default is NO
--(void)hideNaviActionWhenWillAppear:(BOOL)animated;
+- (void)hideNaviActionWhenWillAppear:(BOOL)animated;
 
 - (void)showLoadingView;
 

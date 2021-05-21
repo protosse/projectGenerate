@@ -1,12 +1,14 @@
 //
 //  ApiClient.m
-//  ZhiYiCe
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/25.
 //  Copyright © 2018年 doom. All rights reserved.
 //
 
+#import <AFNetworking/AFNetworking.h>
 #import "ApiClient.h"
+#import "ApiResponse.h"
 
 typedef enum {
     Get = 0,
@@ -33,7 +35,7 @@ static dispatch_once_t onceToken;
         @strongify(self)
         DLog(@"%@ params -> %@", method, params);
         NSString *url = [[NSURL URLWithString:method relativeToURL:[NSURL URLWithString:[GVUserDefaults standardUserDefaults].baseUrl]] absoluteString];
-        NSURLSessionTask *task = [self.apiManager POST:url parameters:params headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSURLSessionTask *task = [self.apiManager POST:url parameters:params headers:nil constructingBodyWithBlock:^(id <AFMultipartFormData> _Nonnull formData) {
             for (int i = 0; i < images.count; i++) {
                 NSData *imageData = UIImageJPEGRepresentation(images[i], 0.5);
                 NSDate *date = [NSDate date];
@@ -42,14 +44,14 @@ static dispatch_once_t onceToken;
                 NSString *dateString = [formatter stringFromDate:date];
                 NSString *fileName = [NSString stringWithFormat:@"%@.png", dateString];
 
-                if(images.count == 1){
+                if (images.count == 1) {
                     [formData appendPartWithFileData:imageData name:name fileName:fileName mimeType:@"image/jpg/png/jpeg"];
                 } else {
                     NSString *temp = [NSString stringWithFormat:@"%@[%d]", name, i];
                     [formData appendPartWithFileData:imageData name:temp fileName:fileName mimeType:@"image/jpg/png/jpeg"];
                 }
             }
-        } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        } progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
             DLog(@"%@ response -> %@", method, [responseObject description]);
             ApiResponse *apiResponse = [self mappedDataFromResponseObject:responseObject className:className];
             apiResponse.statusCode = ((NSHTTPURLResponse *) task.response).statusCode;
@@ -59,7 +61,7 @@ static dispatch_once_t onceToken;
             } else {
                 [subscriber sendError:apiResponse.error];
             }
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
             [subscriber sendError:error];
         }];
         [task resume];
@@ -77,8 +79,8 @@ static dispatch_once_t onceToken;
         NSURLSessionDataTask *task;
         NSString *url = [[NSURL URLWithString:method relativeToURL:[NSURL URLWithString:[GVUserDefaults standardUserDefaults].baseUrl]] absoluteString];
         switch (requestType) {
-            case Get:{
-                task = [self.apiManager GET:url parameters:params headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            case Get: {
+                task = [self.apiManager GET:url parameters:params headers:nil progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
                     @strongify(self)
                     DLog(@"%@ response -> %@", method, [responseObject description]);
                     ApiResponse *apiResponse = [self mappedDataFromResponseObject:responseObject className:className];
@@ -89,13 +91,13 @@ static dispatch_once_t onceToken;
                     } else {
                         [subscriber sendError:apiResponse.error];
                     }
-                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
                     [subscriber sendError:error];
                 }];
                 break;
             }
-            case Post:{
-                task = [self.apiManager POST:url parameters:params headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            case Post: {
+                task = [self.apiManager POST:url parameters:params headers:nil progress:nil success:^(NSURLSessionDataTask *_Nonnull task, id _Nullable responseObject) {
                     @strongify(self)
                     DLog(@"%@ response -> %@", method, [responseObject description]);
                     ApiResponse *apiResponse = [self mappedDataFromResponseObject:responseObject className:className];
@@ -106,7 +108,7 @@ static dispatch_once_t onceToken;
                     } else {
                         [subscriber sendError:apiResponse.error];
                     }
-                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
                     [subscriber sendError:error];
                 }];
                 break;
@@ -129,7 +131,7 @@ static dispatch_once_t onceToken;
         id data = object[@"data"];
         id code = object[@"errcode"];
         NSString *message = @"";
-        if([object[@"msg"] isKindOfClass: [NSString class]]){
+        if ([object[@"msg"] isKindOfClass:[NSString class]]) {
             message = object[@"msg"];
         }
 
@@ -137,20 +139,20 @@ static dispatch_once_t onceToken;
             if ([code integerValue] == 200) {
                 if ([data isKindOfClass:[NSArray class]]) {
                     NSArray *array = data;
-                    if (modelClass == [NSNull class] || modelClass == nil){
+                    if (modelClass == [NSNull class] || modelClass == nil) {
                         mappedObject = array;
                     } else {
                         mappedObject = [NSArray modelArrayWithClass:modelClass json:data];
                     }
                 } else if ([data isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *dic = data;
-                    if (modelClass == [NSNull class] || modelClass == nil){
+                    if (modelClass == [NSNull class] || modelClass == nil) {
                         mappedObject = dic;
                     } else {
                         mappedObject = [modelClass modelWithJSON:dic];
                     }
                 } else {
-                    if(![data isKindOfClass:[NSNull class]]){
+                    if (![data isKindOfClass:[NSNull class]]) {
                         mappedObject = data;
                     }
                 }
@@ -160,7 +162,7 @@ static dispatch_once_t onceToken;
             } else {
                 NSMutableDictionary *dic = @{}.mutableCopy;
                 dic[NSLocalizedDescriptionKey] = message;
-                if(data != nil){
+                if (data != nil) {
                     dic[@"data"] = data;
                 }
                 return [ApiResponse responseWithError:[[NSError alloc] initWithDomain:@"" code:[code integerValue] userInfo:dic]];

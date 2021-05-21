@@ -1,6 +1,6 @@
 //
 //  UIImageView+Common.h
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/10.
 //  Copyright © 2018年 doom. All rights reserved.
@@ -10,6 +10,6 @@
 
 @interface UIImageView (Common)
 
--(void)setImageWithUrl:(NSString *)url;
+- (void)setImageWithUrl:(NSString *)url;
 
 @end

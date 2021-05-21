@@ -1,6 +1,6 @@
 //
 //  BlackContainView.m
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/10.
 //  Copyright © 2018年 doom. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "BlackContainView.h"
 
-@interface BlackContainView() <UIGestureRecognizerDelegate>
+@interface BlackContainView () <UIGestureRecognizerDelegate>
 
 @property(nonatomic, strong) UIView *containView;
 
@@ -16,9 +16,9 @@
 
 @implementation BlackContainView
 
--(instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    if(self){
+    if (self) {
         _containView = [UIView new];
         _containView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
         [self addSubview:_containView];

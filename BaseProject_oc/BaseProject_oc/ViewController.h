@@ -5,9 +5,9 @@
 //  Created by liuliu on 2021/4/25.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : BaseViewController
 
 
 @end

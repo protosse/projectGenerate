@@ -5,12 +5,9 @@
 //  Created by liuliu on 2021/4/25.
 //
 
-#import "UIView+SafeArea.h"
-#import <Masonry/Masonry.h>
-
 @implementation UIView (SafeArea)
 
--(MASViewAttribute *)md_top {
+- (MASViewAttribute *)md_top {
     if (@available(iOS 11.0, *)) {
         return self.mas_safeAreaLayoutGuideTop;
     } else {
@@ -18,7 +15,7 @@
     }
 }
 
--(MASViewAttribute *)md_bottom {
+- (MASViewAttribute *)md_bottom {
     if (@available(iOS 11.0, *)) {
         return self.mas_safeAreaLayoutGuideBottom;
     } else {
@@ -26,7 +23,7 @@
     }
 }
 
--(MASViewAttribute *)md_left {
+- (MASViewAttribute *)md_left {
     if (@available(iOS 11.0, *)) {
         return self.mas_safeAreaLayoutGuideLeft;
     } else {
@@ -34,7 +31,7 @@
     }
 }
 
--(MASViewAttribute *)md_right {
+- (MASViewAttribute *)md_right {
     if (@available(iOS 11.0, *)) {
         return self.mas_safeAreaLayoutGuideRight;
     } else {

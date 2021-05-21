@@ -1,6 +1,6 @@
 //
 //  BaseViewController.m
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/9.
 //  Copyright © 2018年 doom. All rights reserved.
@@ -34,6 +34,8 @@
     _isFirstIn = YES;
     _isAddBackButtonWhenNotFirst = YES;
     @weakify(self)
+    // cann't use InjectionIII with ReactiveObjC
+    // https://github.com/johnno1962/InjectionIII/issues/135
     [[self rac_signalForSelector:@selector(viewDidLoad)] subscribeNext:^(id x) {
         @strongify(self)
         [self bindModel];
@@ -46,17 +48,18 @@
     [self hideNaviActionWhenWillAppear:animated];
 }
 
--(void)hideNaviActionWhenWillAppear:(BOOL)animated {
-    if(self.navigationController){
+- (void)hideNaviActionWhenWillAppear:(BOOL)animated {
+    if (self.navigationController) {
         [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.view.backgroundColor = [UIColor whiteColor];
 
-    if(_isAddBackButtonWhenNotFirst && self.navigationController.viewControllers.count > 1){
+    if (_isAddBackButtonWhenNotFirst && self.navigationController.viewControllers.count > 1) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setImage:R.image.iconBack forState:UIControlStateNormal];
         button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
@@ -66,7 +69,16 @@
     }
 }
 
--(void)backAction{
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self layoutUI];
+}
+
+- (void)layoutUI {
+
+}
+
+- (void)backAction {
     [self.navigationController popViewControllerAnimated:YES];
 }
 

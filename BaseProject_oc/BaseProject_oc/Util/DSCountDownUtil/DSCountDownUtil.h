@@ -16,6 +16,6 @@ typedef void (^CountComplete)(NSInteger second);
 
 + (instancetype)startWithSecond:(NSInteger)second changing:(CountChanging)countChanging complete:(CountComplete)countComplete;
 
--(void)stopCountTimeNoBlock;
+- (void)stopCountTimeNoBlock;
 
 @end

@@ -1,14 +1,15 @@
 //
 //  BaseTableViewController.h
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/9.
 //  Copyright © 2018年 doom. All rights reserved.
 //
 
 #import "BaseViewController.h"
+#import "ApiResponse.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
-#import <ODRefreshControl/ODRefreshControl.h>
+#import <MJRefresh/MJRefresh.h>
 
 @interface BaseTableViewController : BaseViewController <UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
@@ -24,8 +25,6 @@
 @property(nonatomic, copy) NSArray *dataSource;
 
 @property(nonatomic, strong) IBOutlet UITableView *tableView;
-@property(nonatomic, strong) ODRefreshControl *refreshControl;
-
 
 /// default is plain, you can change to group in this method.
 - (void)initTableView;

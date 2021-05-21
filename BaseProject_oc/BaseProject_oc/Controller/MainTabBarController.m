@@ -15,26 +15,26 @@
 
 @implementation MainTabBarController
 
--(instancetype)init {
+- (instancetype)init {
     if (!(self = [super init])) {
         return nil;
     }
     CYLTabBarController *t = [CYLTabBarController tabBarControllerWithViewControllers:[self viewControllers]
-                                                                tabBarItemsAttributes:[self tabBarItemsAttributes]];
-    return (self = (MainTabBarController *)t);
+            tabBarItemsAttributes:[self tabBarItemsAttributes]];
+    return (self = (MainTabBarController *) t);
 }
 
--(NSArray *)viewControllers {
+- (NSArray *)viewControllers {
     return @[
-        [[BaseNavigationController alloc] initWithRootViewController:[ViewController new]],
+            [[BaseNavigationController alloc] initWithRootViewController:[ViewController new]],
     ];
 }
 
 - (NSArray *)tabBarItemsAttributes {
     return @[
-        @{
-            CYLTabBarItemTitle : @"Home"
-        },
+            @{
+                    CYLTabBarItemTitle: @"Home"
+            },
     ];
 }
 

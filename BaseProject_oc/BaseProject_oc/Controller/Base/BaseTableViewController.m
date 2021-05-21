@@ -1,12 +1,13 @@
 //
 //  BaseTableViewController.m
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/9.
 //  Copyright © 2018年 doom. All rights reserved.
 //
 
 #import "BaseTableViewController.h"
+#import "UIView+SafeArea.h"
 
 @interface BaseTableViewController ()
 
@@ -37,7 +38,7 @@
     [super viewDidLoad];
 
     BOOL addConstraints = NO;
-    if(!_tableView){
+    if (!_tableView) {
         [self initTableView];
         addConstraints = YES;
     }
@@ -49,7 +50,7 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
     if (@available(iOS 11.0, *)) {
         _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }else {
+    } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     if (_showDZNEmpty) {
@@ -58,7 +59,7 @@
     }
     _tableView.tableFooterView = [UIView new];
 
-    if(addConstraints){
+    if (addConstraints) {
         [self.view addSubview:_tableView];
         [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.equalTo(self.view);
@@ -72,12 +73,12 @@
 
     @weakify(self)
     [[[RACObserve(self, dataSource)
-       distinctUntilChanged]
-      deliverOnMainThread]
-     subscribeNext:^(id x) {
-         @strongify(self)
-         [self.tableView reloadData];
-     }];
+            distinctUntilChanged]
+            deliverOnMainThread]
+            subscribeNext:^(id x) {
+                @strongify(self)
+                [self.tableView reloadData];
+            }];
 
     self.requestCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(NSNumber *p) {
         @strongify(self)
@@ -101,11 +102,11 @@
             self.isFirstIn = NO;
         }
 
-        if(self.shouldInfiniteScrolling){
+        if (self.shouldInfiniteScrolling) {
             self.shouldInfiniteScrolling = array.count >= 10;
         }
 
-        if(self.page == 1){
+        if (self.page == 1) {
             self.dataSource = array;
         } else {
             NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:self.dataSource];
@@ -126,31 +127,27 @@
     }];
 
     if (_shouldPullToRefresh) {
-        self.refreshControl = [[ODRefreshControl alloc] initInScrollView:self.tableView];
-        [[self.refreshControl rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(id x) {
+        self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             @strongify(self)
-            [[[self.requestCommand execute:@1] deliverOnMainThread]
-             subscribeNext:^(id x) {
-                 @strongify(self)
-                 self.page = 1;
-             } error:^(NSError *error) {
-                 @strongify(self)
-                 [self.refreshControl endRefreshing];
-             }completed:^{
-                 @strongify(self)
-                 [self.refreshControl endRefreshing];
-             }];
+            [[[self.requestCommand execute:@1] deliverOnMainThread] subscribeNext:^(id x) {
+                @strongify(self)
+                self.page = 1;
+            } error:^(NSError *error) {
+                @strongify(self)
+                [self.tableView.mj_header endRefreshing];
+            } completed:^{
+                @strongify(self)
+                [self.tableView.mj_header endRefreshing];
+            }];
         }];
     }
 
-    if(_shouldInfiniteScrolling){
-        RAC(self, shouldInfiniteScrolling) = [[RACObserve(self, dataSource)
-                                               deliverOnMainThread]
-                                              map:^(NSArray *dataSource) {
-                                                  @strongify(self)
-                                                  NSUInteger count = dataSource.count;
-                                                  return @(count >= self.perPage);
-                                              }];
+    if (_shouldInfiniteScrolling) {
+        RAC(self, shouldInfiniteScrolling) = [[RACObserve(self, dataSource) deliverOnMainThread] map:^(NSArray *dataSource) {
+            @strongify(self)
+            NSUInteger count = dataSource.count;
+            return @(count >= self.perPage);
+        }];
     }
 
     [[self.requestCommand.errors filter:[self requestRemoteDataErrorsFilter]] subscribe:self.errors];

@@ -9,6 +9,8 @@
 #ifndef DRConstant_h
 #define DRConstant_h
 
+static NSInteger const kDefaultTenPerPageNumber = 10;
+
 /**
  *  Color
  */
@@ -67,14 +69,6 @@ typedef BOOL (^BoolBlock_id)(id);
 typedef int  (^IntBlock_id)(id);
 
 typedef id   (^IDBlock_id)(id);
-
-/**
- *  AppInfo
- */
-
-#define DR_APP_NAME    ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"])
-#define DR_APP_VERSION ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"])
-#define DR_APP_BUILD   ([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"])
 
 
 //A better version of NSLog

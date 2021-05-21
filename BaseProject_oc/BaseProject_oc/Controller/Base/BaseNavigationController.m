@@ -1,6 +1,6 @@
 //
 //  BaseNavigationController.m
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/9.
 //  Copyright © 2018年 doom. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "BaseNavigationController.h"
 
-@interface BaseNavigationController ()<UIGestureRecognizerDelegate>
+@interface BaseNavigationController () <UIGestureRecognizerDelegate>
 
 @end
 
@@ -22,9 +22,9 @@
         self.navigationBar.barTintColor = [UIColor whiteColor];
         self.navigationBar.tintColor = kBlackFontColor;
         self.navigationBar.titleTextAttributes = @{
-                                                   NSForegroundColorAttributeName: UIColorHex(333333),
-                                                   NSFontAttributeName: [UIFont boldSystemFontOfSize:18]
-                                                   };
+                NSForegroundColorAttributeName: UIColorHex(333333),
+                NSFontAttributeName: [UIFont boldSystemFontOfSize:18]
+        };
     }
     [self.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [self.navigationBar setShadowImage:[UIImage imageWithColor:kGrayBackColor]];

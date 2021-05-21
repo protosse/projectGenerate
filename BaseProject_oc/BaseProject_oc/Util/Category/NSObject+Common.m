@@ -1,13 +1,13 @@
 //
 //  NSObject+Common.m
-//  ZhiYiCe
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/23.
 //  Copyright © 2018年 doom. All rights reserved.
 //
 
-#import "NSObject+Common.h"
 #import <JDStatusBarNotification/JDStatusBarNotification.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @implementation NSObject (Common)
 
@@ -56,7 +56,7 @@
     }
 }
 
-+ (void)showHudTipStr:(NSString *)tipStr{
++ (void)showHudTipStr:(NSString *)tipStr {
     if (tipStr && tipStr.length > 0) {
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:kKeyWindow animated:YES];
         hud.mode = MBProgressHUDModeText;
@@ -69,7 +69,8 @@
         [hud hideAnimated:YES afterDelay:2.0];
     }
 }
-+ (MBProgressHUD *)showHUDQueryStr:(NSString *)titleStr{
+
++ (MBProgressHUD *)showHUDQueryStr:(NSString *)titleStr {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:kKeyWindow animated:YES];
     hud.label.text = titleStr;
     hud.label.textColor = [UIColor whiteColor];
@@ -79,41 +80,41 @@
     return hud;
 }
 
-+ (void)hideHUDQuery{
++ (void)hideHUDQuery {
     MBProgressHUD *hud = [MBProgressHUD HUDForView:kKeyWindow];
     [hud removeFromSuperview];
 }
 
-+ (void)showStatusBarQueryStr:(NSString *)tipStr{
++ (void)showStatusBarQueryStr:(NSString *)tipStr {
     [JDStatusBarNotification showWithStatus:tipStr styleName:JDStatusBarStyleSuccess];
     [JDStatusBarNotification showActivityIndicator:YES indicatorStyle:UIActivityIndicatorViewStyleWhite];
 }
 
-+ (void)showStatusBarSuccessStr:(NSString *)tipStr{
++ (void)showStatusBarSuccessStr:(NSString *)tipStr {
     if ([JDStatusBarNotification isVisible]) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [JDStatusBarNotification showActivityIndicator:NO indicatorStyle:UIActivityIndicatorViewStyleWhite];
             [JDStatusBarNotification showWithStatus:tipStr dismissAfter:2.5 styleName:JDStatusBarStyleSuccess];
         });
-    }else{
+    } else {
         [JDStatusBarNotification showActivityIndicator:NO indicatorStyle:UIActivityIndicatorViewStyleWhite];
         [JDStatusBarNotification showWithStatus:tipStr dismissAfter:2.0 styleName:JDStatusBarStyleSuccess];
     }
 }
 
-+ (void)showStatusBarErrorStr:(NSString *)errorStr{
++ (void)showStatusBarErrorStr:(NSString *)errorStr {
     if ([JDStatusBarNotification isVisible]) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [JDStatusBarNotification showActivityIndicator:NO indicatorStyle:UIActivityIndicatorViewStyleWhite];
             [JDStatusBarNotification showWithStatus:errorStr dismissAfter:2.5 styleName:JDStatusBarStyleError];
         });
-    }else{
+    } else {
         [JDStatusBarNotification showActivityIndicator:NO indicatorStyle:UIActivityIndicatorViewStyleWhite];
         [JDStatusBarNotification showWithStatus:errorStr dismissAfter:2.5 styleName:JDStatusBarStyleError];
     }
 }
 
--(void)changeToLogin {
+- (void)changeToLogin {
 //    UIView *snapShot = [kKeyWindow snapshotViewAfterScreenUpdates:YES];
 //    [[NH_ChatHelper shareChatHelper] logoutUser:^(BOOL result) {
 //        [UserModel doLogout];
@@ -131,7 +132,7 @@
 //    }];
 }
 
--(void)changeToRootTab {
+- (void)changeToRootTab {
 //    UIView *snapShot = [kKeyWindow snapshotViewAfterScreenUpdates:YES];
 //    UITabBarController *tab = R.storyboard.main.rootTabBarController;
 //    [tab.view addSubview:snapShot];

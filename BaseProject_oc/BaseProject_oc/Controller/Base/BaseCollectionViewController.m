@@ -1,12 +1,13 @@
 //
 //  BaseCollectionViewController.m
-//  ShanjianUser
+//  BaseProject_oc
 //
 //  Created by doom on 2018/7/19.
 //  Copyright © 2018年 doom. All rights reserved.
 //
 
 #import "BaseCollectionViewController.h"
+#import "UIView+SafeArea.h"
 
 @interface BaseCollectionViewController ()
 
@@ -38,7 +39,7 @@
     [super viewDidLoad];
 
     BOOL addConstraints = NO;
-    if(!_collectionView){
+    if (!_collectionView) {
         [self initCollectionView];
         addConstraints = YES;
     }
@@ -48,7 +49,7 @@
     _collectionView.alwaysBounceVertical = YES;
     if (@available(iOS 11.0, *)) {
         _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }else {
+    } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     if (_showDZNEmpty) {
@@ -56,7 +57,7 @@
         _collectionView.emptyDataSetDelegate = self;
     }
 
-    if(addConstraints){
+    if (addConstraints) {
         [self.view addSubview:_collectionView];
         [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.left.right.equalTo(self.view);
@@ -70,12 +71,12 @@
 
     @weakify(self)
     [[[RACObserve(self, dataSource)
-       distinctUntilChanged]
-      deliverOnMainThread]
-     subscribeNext:^(id x) {
-         @strongify(self)
-         [self.collectionView reloadData];
-     }];
+            distinctUntilChanged]
+            deliverOnMainThread]
+            subscribeNext:^(id x) {
+                @strongify(self)
+                [self.collectionView reloadData];
+            }];
 
     self.requestCommand = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(NSNumber *p) {
         @strongify(self)
@@ -99,11 +100,11 @@
             self.isFirstIn = NO;
         }
 
-        if(self.shouldInfiniteScrolling){
+        if (self.shouldInfiniteScrolling) {
             self.shouldInfiniteScrolling = array.count >= 10;
         }
 
-        if(self.page == 1){
+        if (self.page == 1) {
             self.dataSource = array;
         } else {
             NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:self.dataSource];
@@ -124,31 +125,27 @@
     }];
 
     if (_shouldPullToRefresh) {
-        self.refreshControl = [[ODRefreshControl alloc] initInScrollView:self.collectionView];
-        [[self.refreshControl rac_signalForControlEvents:UIControlEventValueChanged] subscribeNext:^(id x) {
+        self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             @strongify(self)
-            [[[self.requestCommand execute:@1] deliverOnMainThread]
-             subscribeNext:^(id x) {
-                 @strongify(self)
-                 self.page = 1;
-             } error:^(NSError *error) {
-                 @strongify(self)
-                 [self.refreshControl endRefreshing];
-             }completed:^{
-                 @strongify(self)
-                 [self.refreshControl endRefreshing];
-             }];
+            [[[self.requestCommand execute:@1] deliverOnMainThread] subscribeNext:^(id x) {
+                @strongify(self)
+                self.page = 1;
+            } error:^(NSError *error) {
+                @strongify(self)
+                [self.collectionView.mj_header endRefreshing];
+            } completed:^{
+                @strongify(self)
+                [self.collectionView.mj_header endRefreshing];
+            }];
         }];
     }
 
-    if(_shouldInfiniteScrolling){
-        RAC(self, shouldInfiniteScrolling) = [[RACObserve(self, dataSource)
-                                               deliverOnMainThread]
-                                              map:^(NSArray *dataSource) {
-                                                  @strongify(self)
-                                                  NSUInteger count = dataSource.count;
-                                                  return @(count >= self.perPage);
-                                              }];
+    if (_shouldInfiniteScrolling) {
+        RAC(self, shouldInfiniteScrolling) = [[RACObserve(self, dataSource) deliverOnMainThread] map:^(NSArray *dataSource) {
+            @strongify(self)
+            NSUInteger count = dataSource.count;
+            return @(count >= self.perPage);
+        }];
     }
 
     [[self.requestCommand.errors filter:[self requestRemoteDataErrorsFilter]] subscribe:self.errors];
@@ -183,15 +180,15 @@
 
 #pragma mark collectionView dataSource
 
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.dataSource.count;
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     return nil;
 }
 
--(void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     if (_shouldInfiniteScrolling) {
         if (indexPath.row != 0 && indexPath.row == [self.dataSource count] - 1) {
             [self.requestCommand execute:@(self.page + 1)];
